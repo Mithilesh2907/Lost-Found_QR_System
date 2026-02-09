@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Entity
 @Data
-class Tag {
+public class Tag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
