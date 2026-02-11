@@ -1,6 +1,7 @@
 package com.example.lostfound.controller;
 
 import com.example.lostfound.dto.ScanReq;
+import com.example.lostfound.service.ScanService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,11 +10,24 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "https://localhost:3000")
 public class ScanController {
 
+    private final ScanService scanService;
+
+    public ScanController(ScanService scanService) {
+        this.scanService = scanService;
+    }
+
     @PostMapping("/{uuid}")
     public ResponseEntity<?> scanItem(
             @PathVariable String uuid,
             @RequestBody ScanReq request
     ) {
-        return ResponseEntity.ok("Scan received.");
+        String response = scanService.processScan(
+                uuid,
+                request.getMessage(),
+                request.getLat(),
+                request.getLng()
+        );
+
+        return ResponseEntity.ok(response);
     }
 }
