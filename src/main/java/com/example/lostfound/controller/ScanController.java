@@ -30,4 +30,8 @@ public class ScanController {
 
         return ResponseEntity.ok(response);
     }
+
+    public ResponseEntity<?> getHistory(@PathVariable String uuid) {
+        return ResponseEntity.ok(scanService.getHistory(uuid));
+    }
 }
