@@ -7,6 +7,7 @@ import com.example.lostfound.repository.TagRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ScanService {
@@ -34,5 +35,13 @@ public class ScanService {
         System.out.println("Message received " + message);
 
         return "Scan saved successfully";
+    }
+
+    public List<ScanHistory> getHistory(String uuid) {
+        Tag tag = tagRepository.findByUuid(uuid)
+                .orElseThrow(() -> new RuntimeException("Tag not found"));
+
+        return scanHistoryRepository
+                .findByTag_IdOrderByTimestampDesc(tag.getId());
     }
 }
