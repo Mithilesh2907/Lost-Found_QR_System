@@ -31,7 +31,7 @@ public class ScanService {
 
         scanHistoryRepository.save(scanHistory);
 
-        System.out.println("Message received" + message);
+        System.out.println("Message received " + message);
 
         return "Scan saved successfully";
     }
