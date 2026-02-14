@@ -31,6 +31,7 @@ public class ScanController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/history/{uuid}")
     public ResponseEntity<?> getHistory(@PathVariable String uuid) {
         return ResponseEntity.ok(scanService.getHistory(uuid));
     }
