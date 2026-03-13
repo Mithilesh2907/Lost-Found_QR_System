@@ -31,8 +31,8 @@ public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
 
     public SecurityConfig(JwtAuthEntryPoint authEntryPoint,
-                          CustomUserDetailsService userDetailsService,
-                          JwtAuthFilter jwtAuthFilter) {
+            CustomUserDetailsService userDetailsService,
+            JwtAuthFilter jwtAuthFilter) {
         this.authEntryPoint = authEntryPoint;
         this.userDetailsService = userDetailsService;
         this.jwtAuthFilter = jwtAuthFilter;
@@ -49,8 +49,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/v1/scan/**").permitAll()
-                        .anyRequest().authenticated()
-                );
+                        .anyRequest().authenticated());
 
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
@@ -77,12 +76,21 @@ public class SecurityConfig {
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
+
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:3000"));
+
+        configuration.setAllowedOrigins(List.of(
+                "http://localhost:5173",
+                "http://localhost:3000",
+                "https://lost-found-qr-system.vercel.app"));
+
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Cache-Control"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
+
         return source;
     }
 }
