@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/scan")
-@CrossOrigin(origins = "https://localhost:3000")
+@CrossOrigin(origins = { "https://localhost:3000", "https://lost-found-qr-system.vercel.app" })
 public class ScanController {
 
     private final ScanService scanService;
@@ -19,14 +19,12 @@ public class ScanController {
     @PostMapping("/{uuid}")
     public ResponseEntity<?> scanItem(
             @PathVariable String uuid,
-            @RequestBody ScanReq request
-    ) {
+            @RequestBody ScanReq request) {
         String response = scanService.processScan(
                 uuid,
                 request.getMessage(),
                 request.getLat(),
-                request.getLng()
-        );
+                request.getLng());
 
         return ResponseEntity.ok(response);
     }
