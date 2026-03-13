@@ -18,6 +18,7 @@ public class ScanHistory {
 
     private Double latitude;
     private Double longitude;
+    private String message;
 
     private LocalDateTime timestamp;
 }

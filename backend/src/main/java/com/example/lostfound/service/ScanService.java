@@ -28,6 +28,7 @@ public class ScanService {
         scanHistory.setTag(tag);
         scanHistory.setLatitude(lat);
         scanHistory.setLongitude(lng);
+        scanHistory.setMessage(message);
         scanHistory.setTimestamp(LocalDateTime.now());
 
         scanHistoryRepository.save(scanHistory);
