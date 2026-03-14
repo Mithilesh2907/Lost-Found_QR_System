@@ -103,7 +103,7 @@ Thumbs.db
 # Spring Boot Sensitive Files
 ############################
 # application.properties is intentionally tracked (uses env vars, no hardcoded secrets)
-# src/main/resources/application.properties
+src/main/resources/application.properties
 src/main/resources/application.yml
 src/main/resources/application-*.properties
 src/main/resources/application-*.yml
