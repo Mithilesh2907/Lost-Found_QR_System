@@ -3,6 +3,7 @@ package com.example.lostfound.config;
 import com.example.lostfound.security.JwtAuthEntryPoint;
 import com.example.lostfound.security.JwtAuthFilter;
 import com.example.lostfound.service.CustomUserDetailsService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,11 +21,15 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    @Value("${cors.allowed.origins}")
+    private String allowedOriginsStr;
 
     private final JwtAuthEntryPoint authEntryPoint;
     private final CustomUserDetailsService userDetailsService;
@@ -79,10 +84,8 @@ public class SecurityConfig {
 
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of(
-                "http://localhost:5173",
-                "http://localhost:3000",
-                "https://lost-found-qr-system.vercel.app"));
+        List<String> origins = Arrays.asList(allowedOriginsStr.split(","));
+        configuration.setAllowedOrigins(origins);
 
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
