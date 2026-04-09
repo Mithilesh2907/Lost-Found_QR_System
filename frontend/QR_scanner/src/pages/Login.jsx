@@ -11,6 +11,13 @@ const Login = () => {
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
 
+    const toErrorMessage = (err) => {
+        const data = err?.response?.data;
+        if (typeof data === 'string' && data.trim()) return data;
+        if (data && typeof data === 'object') return data.message || data.error || JSON.stringify(data);
+        return err?.message || 'Invalid email or password.';
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
@@ -18,8 +25,8 @@ const Login = () => {
             const res = await api.post('/auth/login', { email, password });
             login(res.data.token);
             navigate('/dashboard');
-        } catch {
-            setError('Invalid email or password.');
+        } catch (err) {
+            setError(toErrorMessage(err));
         }
     };
 

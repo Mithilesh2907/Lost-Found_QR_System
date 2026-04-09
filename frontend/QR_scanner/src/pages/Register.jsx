@@ -10,6 +10,13 @@ const Register = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
+    const toErrorMessage = (err) => {
+        const data = err?.response?.data;
+        if (typeof data === 'string' && data.trim()) return data;
+        if (data && typeof data === 'object') return data.message || data.error || JSON.stringify(data);
+        return err?.message || 'Failed to register. Please try again.';
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
@@ -17,7 +24,7 @@ const Register = () => {
             await api.post('/auth/register', { email, password, phoneNumber });
             navigate('/login');
         } catch (err) {
-            setError(err.response?.data || 'Failed to register. Please try again.');
+            setError(toErrorMessage(err));
         }
     };
 
