@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-@CrossOrigin(origins = { "http://localhost:5173", "https://lost-found-qr-system.vercel.app" }) // Vite default port
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
