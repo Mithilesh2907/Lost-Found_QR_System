@@ -1,4 +1,19 @@
-# React + Vite
+# Lost & Found QR (Frontend)
+
+## Backend URL
+
+This project uses Vite, so only env vars prefixed with `VITE_` are available in the browser.
+
+- Create `frontend/QR_scanner/.env.local` (or set a Vercel env var) named `VITE_BACKEND_URL`.
+- Value can be the backend base URL with or without `/api/v1`.
+
+Example:
+
+```bash
+VITE_BACKEND_URL=http://localhost:8080
+```
+
+If `VITE_BACKEND_URL` is not set, the app falls back to `http://localhost:8080/api/v1`.
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

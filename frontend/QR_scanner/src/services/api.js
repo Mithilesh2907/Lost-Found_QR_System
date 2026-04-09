@@ -1,9 +1,14 @@
 import axios from 'axios';
 
-const API_URL = import.meta.env.BACKEND_URL;
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
+const normalizeBaseUrl = (value) => {
+    const base = (value || 'http://localhost:8080').replace(/\/+$/, '');
+    return base.endsWith('/api/v1') ? base : `${base}/api/v1`;
+};
 
 const api = axios.create({
-    baseURL: API_URL || 'http://localhost:8080/api/v1',
+    baseURL: normalizeBaseUrl(BACKEND_URL),
 });
 
 // Request interceptor to add JWT conditionally
