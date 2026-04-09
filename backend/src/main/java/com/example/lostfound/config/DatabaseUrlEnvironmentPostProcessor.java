@@ -5,6 +5,8 @@ import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.net.URLDecoder;
@@ -21,9 +23,12 @@ import java.util.Map;
  */
 public class DatabaseUrlEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
 
+    private static final Logger log = LoggerFactory.getLogger(DatabaseUrlEnvironmentPostProcessor.class);
+
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
-        if (hasText(environment.getProperty("spring.datasource.url"))) {
+        // If the user explicitly provides Spring's canonical vars, don't override.
+        if (hasText(environment.getProperty("SPRING_DATASOURCE_URL"))) {
             return;
         }
 
@@ -36,6 +41,7 @@ public class DatabaseUrlEnvironmentPostProcessor implements EnvironmentPostProce
             Map<String, Object> props = new HashMap<>();
             props.put("spring.datasource.url", databaseUrl);
             environment.getPropertySources().addFirst(new MapPropertySource("databaseUrl", props));
+            log.info("Using DATABASE_URL as JDBC URL.");
             return;
         }
 
@@ -81,14 +87,19 @@ public class DatabaseUrlEnvironmentPostProcessor implements EnvironmentPostProce
         Map<String, Object> props = new HashMap<>();
         props.put("spring.datasource.url", jdbcUrl);
 
-        if (!hasText(environment.getProperty("spring.datasource.username")) && hasText(username)) {
+        if (!hasText(environment.getProperty("SPRING_DATASOURCE_USERNAME"))
+                && !hasText(environment.getProperty("spring.datasource.username"))
+                && hasText(username)) {
             props.put("spring.datasource.username", username);
         }
-        if (!hasText(environment.getProperty("spring.datasource.password")) && hasText(password)) {
+        if (!hasText(environment.getProperty("SPRING_DATASOURCE_PASSWORD"))
+                && !hasText(environment.getProperty("spring.datasource.password"))
+                && hasText(password)) {
             props.put("spring.datasource.password", password);
         }
 
         environment.getPropertySources().addFirst(new MapPropertySource("databaseUrl", props));
+        log.info("Converted DATABASE_URL to JDBC URL for Spring datasource.");
     }
 
     @Override
@@ -104,4 +115,3 @@ public class DatabaseUrlEnvironmentPostProcessor implements EnvironmentPostProce
         return URLDecoder.decode(value, StandardCharsets.UTF_8);
     }
 }
-
