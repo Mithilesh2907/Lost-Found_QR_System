@@ -54,10 +54,10 @@ public class SecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("/api/v1/scan/**").permitAll()
-                        .requestMatchers("/error").permitAll()
+                        .requestMatchers("/ws/**", // websocket
+                                "/auth/**", // 👈 signup + login
+                                "/api/v1/auth/**")
+                        .permitAll()
                         .anyRequest().authenticated());
 
         http.authenticationProvider(authenticationProvider());
